@@ -4,7 +4,7 @@ import PostPage from "./pages/PostPage";
 
 function App(): JSX.Element {
   return (
-    <Router>
+    <Router basename="/blog">
       <div className="min-h-screen bg-gray-100 text-gray-800 flex flex-col">
         <header className="bg-indigo-600 text-white py-6 shadow-md">
           <h1 className="text-4xl font-bold text-center">
