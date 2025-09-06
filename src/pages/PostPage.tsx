@@ -37,7 +37,7 @@ export default function PostPage() {
       <h2 className="text-3xl font-bold mb-4">{post.title}</h2>
       <p className="text-sm text-gray-500 mb-6">Categoría: {post.category}</p>
 
-      <article className="prose prose-lg prose-indigo max-w-none">
+      <article className="prose lg:prose-xl prose-indigo max-w-none mx-auto dark:prose-invert">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>
           {content}
         </ReactMarkdown>
