@@ -3,6 +3,10 @@ import { useParams, Link } from "react-router-dom";
 import { posts } from "../posts";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+// 🎨 Puedes elegir un tema, aquí ejemplos:
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { duotoneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 export default function PostPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -33,19 +37,49 @@ export default function PostPage() {
   }
 
   return (
-    <main className="max-w-3xl mx-auto px-4 py-6">
-      <h2 className="text-3xl font-bold mb-4">{post.title}</h2>
-      <p className="text-sm text-gray-500 mb-6">Categoría: {post.category}</p>
+    <main className="max-w-3xl mx-auto px-4 py-6 bg-white dark:bg-gray-900 rounded-xl shadow">
+      <h2 className="text-4xl font-extrabold mb-2">{post.title}</h2>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">{post.category}</p>
 
+      {/* Contenido del markdown */}
       <article className="prose lg:prose-xl prose-indigo max-w-none mx-auto dark:prose-invert">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            code({ className, children, ...props }) {
+              const match = /language-(\w+)/.exec(className || "");
+              return match ? (
+                <SyntaxHighlighter
+                  {...props}
+                  PreTag="div"
+                  language={match[1]}
+                  style={oneDark} // 🌙 usa oneDark para dark mode
+                  customStyle={{
+                    borderRadius: "0.5rem",
+                    padding: "1rem",
+                    fontSize: "0.9rem",
+                  }}
+                >
+                  {String(children).replace(/\n$/, "")}
+                </SyntaxHighlighter>
+              ) : (
+                <code
+                  {...props}
+                  className="px-1 py-0.5 rounded bg-gray-200 dark:bg-gray-800 text-sm"
+                >
+                  {children}
+                </code>
+              );
+            },
+          }}
+        >
           {content}
         </ReactMarkdown>
       </article>
 
-      <div className="text-center mt-6">
-        <Link to="/" className="text-indigo-600 hover:underline text-sm font-medium">
-          ← Volver al inicio
+      <div className="mt-8">
+        <Link to="/" className="text-indigo-600 hover:underline">
+          ⬅ Volver a inicio
         </Link>
       </div>
     </main>
