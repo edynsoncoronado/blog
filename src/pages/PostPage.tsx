@@ -31,25 +31,20 @@ export default function PostPage() {
       </main>
     );
   }
-  // return (
-  //   <main className="max-w-3xl mx-auto px-4 py-6">
-  //     <h2 className="text-3xl font-bold mb-6">{post.title}</h2>
-  //     <Post file={post.file} />
-  //   </main>
-  // );
+
   return (
     <main className="max-w-3xl mx-auto px-4 py-6">
       <h2 className="text-3xl font-bold mb-4">{post.title}</h2>
       <p className="text-sm text-gray-500 mb-6">Categoría: {post.category}</p>
 
-      <article className="prose prose-indigo max-w-none">
+      <article className="prose prose-lg prose-indigo max-w-none">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>
           {content}
         </ReactMarkdown>
       </article>
 
       <div className="text-center mt-6">
-        <Link to="/" className="text-indigo-600 hover:underline">
+        <Link to="/" className="text-indigo-600 hover:underline text-sm font-medium">
           ← Volver al inicio
         </Link>
       </div>
