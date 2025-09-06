@@ -6,9 +6,13 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 // 🎨 Puedes elegir un tema, aquí ejemplos:
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { duotoneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { prism } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-export default function PostPage() {
+interface PostPageProps {
+  theme: string; // "light" | "dark"
+}
+
+export default function PostPage({ theme }: PostPageProps) {
   const { slug } = useParams<{ slug: string }>();
   const [content, setContent] = useState<string>("Cargando...");
   const post = posts.find((p) => p.slug === slug);
@@ -37,9 +41,15 @@ export default function PostPage() {
   }
 
   return (
-    <main className="max-w-3xl mx-auto px-4 py-6 bg-white dark:bg-gray-900 rounded-xl shadow">
+    <main 
+      className={`max-w-3xl mx-auto px-4 py-6 bg-white rounded-xl shadow
+        ${theme === "dark" ? "dark:bg-gray-900" : ""}
+      `}>
       <h2 className="text-4xl font-extrabold mb-2">{post.title}</h2>
-      <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">{post.category}</p>
+      <p
+        className={`text-sm text-gray-500 mb-8
+          ${theme === "dark" ? "text-gray-400" : ""}
+        `}>{post.category}</p>
 
       {/* Contenido del markdown */}
       <article className="prose lg:prose-xl prose-indigo max-w-none mx-auto dark:prose-invert">
@@ -53,7 +63,8 @@ export default function PostPage() {
                   {...props}
                   PreTag="div"
                   language={match[1]}
-                  style={oneDark} // 🌙 usa oneDark para dark mode
+                  // style={oneDark} // 🌙 usa oneDark para dark mode
+                  style={theme === "dark" ? oneDark : prism} // 🔹 alterna según tema
                   customStyle={{
                     borderRadius: "0.5rem",
                     padding: "1rem",
@@ -63,10 +74,11 @@ export default function PostPage() {
                   {String(children).replace(/\n$/, "")}
                 </SyntaxHighlighter>
               ) : (
-                <code
-                  {...props}
-                  className="px-1 py-0.5 rounded bg-gray-200 dark:bg-gray-800 text-sm"
-                >
+                // <code
+                //   {...props}
+                //   className="px-1 py-0.5 rounded bg-gray-200 dark:bg-gray-800 text-sm"
+                // >
+                 <code className={className} {...props}>
                   {children}
                 </code>
               );

@@ -17,7 +17,13 @@ function App(): JSX.Element {
   }, [theme]);
 
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <div
+        className={`min-h-screen transition-colors duration-300 ${
+          theme === "dark"
+            ? "dark:bg-gray-900 dark:text-gray-100"
+            : "bg-gray-100 text-gray-800"
+        }`}
+    >
       <Router basename="/blog">
         <div className="flex flex-col min-h-screen">
           {/* 🔹 Header con botón de cambio */}
@@ -40,7 +46,7 @@ function App(): JSX.Element {
           <main className="flex-1">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/post/:slug" element={<PostPage />} />
+              <Route path="/post/:slug" element={<PostPage theme={theme} />} />
             </Routes>
           </main>
 
@@ -52,6 +58,7 @@ function App(): JSX.Element {
         </div>
       </Router>
     </div>
+
   );
 }
 
